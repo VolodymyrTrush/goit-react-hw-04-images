@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ImageGallery } from 'components/ImageGallery';
-import { Searchbar } from 'components/Searchbar';
-import { Container } from 'components/Container';
+import { ImageGallery } from 'components/ImageGallery/ImageGallery';
+import { Searchbar } from 'components/Searchbar/Searchbar';
+import { Container } from 'components/Container/Container';
 import { getImages } from 'services/api';
-import { Modal } from 'components/ui/Modal';
-import { LoaderContainer } from 'components/LoaderContainer';
+import { Modal } from 'components/ui/Modal/Modal';
+import { LoaderContainer } from 'components/LoaderContainer/LoaderContainer';
 import { theme } from 'stylesConfig/theme';
 
 export const App = () => {
