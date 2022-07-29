@@ -1,75 +1,87 @@
 import { useState, useEffect } from 'react';
-import { SearchBar} from "./components/SearchBar/SearchBar";
-import { AppStyled } from "./components/App.container";
-import { Button } from "./components/Button/Button";
-import { Loader } from "./components/Loader/Loader";
-import { Modal } from "./components/Modal/Modal";
-import { ImageGallery } from "./components/ImageGallery/ImageGallery";
-// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { ToastContainer, toast } from "react-toastify";
-import { fetchImages } from "service/imgApi";
+import { ThreeDots } from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ImageGallery } from 'components/ImageGallery';
+import { Searchbar } from 'components/Searchbar';
+import { Container } from 'components/Container';
+import { getImages } from 'services/api';
+import { Modal } from 'components/ui/Modal';
+import { LoaderContainer } from 'components/LoaderContainer';
+import { theme } from 'stylesConfig/theme';
 
 export const App = () => {
-  const [query, setQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
-  const [images, setImages] = useState([]);
-  const [largeImg, setLargeImg] = useState(null);
+  const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-
+  const [activeimageURL, setActiveimageURL] = useState(null);
 
   useEffect(() => {
-    if (query.trim() === '') {
+    if (searchQuery === '') {
       return;
     }
-    async function getImages() {
-      try{
-        const foundImages = await fetchImages(query, page);
-        const imageMapper = imgList => {
-          return imgList.map(({ id, webformatURL, largeImageURL, tags }) => {
-            return { id, webformatURL, largeImageURL, alt: tags };
-          });
-        };
-        setImages(prevImg => [...prevImg, ...imageMapper(foundImages)]);
-      } catch {
-        return toast.error("Sorry, we didn't find anything");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getImages();
-  }, [query, page]);
+    const fetchGalleryItems = () => {
+      setIsLoading(true);
+      getImages(searchQuery, page)
+        .then(res => {
+          setItems(prevState => [...prevState, ...res]);
+          setIsLoading(false);
+          if (res.length === 0) {
+            return toast.error(
+              'Oh, the search results were not successful :( Try again.'
+            );
+          }
+        })
+        .catch(error => {
+          toast.error('Sorry, there is ' + error.message);
+          setIsLoading({ isLoading: false });
+        });
+    };
 
-  const onChangeQuery = query => {
-    setQuery(query);
-    setPage(1);
-    setImages([]);
+    fetchGalleryItems();
+  }, [page, searchQuery]);
+
+  const closeModal = () => {
+    setActiveimageURL(null);
+  };
+
+  const handleSubmit = ({ searchQuery }) => {
+    if (searchQuery.trim() !== '') {
+      setSearchQuery(searchQuery);
+      setPage(1);
+      setIsLoading(false);
+      setItems([]);
+      return;
+    }
   };
 
   const loadMore = () => {
-    setPage(page + 1);
+    setPage(page => page + 1);
   };
 
-  const toggleLargeMode = largeImg => {
-    setLargeImg(largeImg);
-  };
+  return (
+    <Container>
+      <Searchbar onSubmit={handleSubmit} loadMore={loadMore} />
 
-    return (
-      <AppStyled>
-        <SearchBar onSubmit={onChangeQuery} />
-        <ToastContainer autoClose={3000} />
-        {isLoading ? <Loader /> : null}
-        {images.length > 0 && (
-          <ImageGallery
-            images={images}
-            toggleLargeMode={toggleLargeMode}
-            />
-        )}
-        {images.length > 0 && !isLoading && <Button onClick={loadMore} />}
-        {largeImg && (
-        <Modal largeImg={largeImg.url} alt={query} onClose={toggleLargeMode} />
+      <ToastContainer autoClose={3000} />
+      {isLoading && (
+        <LoaderContainer>
+          <ThreeDots color={theme.colors.searchBarBgc} />
+        </LoaderContainer>
       )}
-      </AppStyled>
-    );
 
-}  
+      {items.length !== 0 && (
+        <ImageGallery
+          items={items}
+          setActiveImageURL={setActiveimageURL}
+          loadMore={loadMore}
+        />
+      )}
+      {activeimageURL && (
+        <Modal activeimageURL={activeimageURL} onClose={closeModal} />
+      )}
+    </Container>
+  );
+};

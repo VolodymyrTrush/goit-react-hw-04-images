@@ -1,47 +1,33 @@
-import PropTypes from 'prop-types';
-import {useState} from 'react';
-import {SearchBarStyled, SearchForm, SearchInput, ButtonSearch} from './SearchBar.styled';
+import { Formik } from 'formik';
 import { toast } from 'react-toastify';
+import { ImSearch } from 'react-icons/im';
+import {
+  SearchBarInput,
+  SearchBarForm,
+  SearchBarButton,
+  SearchBarheader,
+  SearchBarButtonLabel,
+} from './SearchBar.styled';
 
-
-export const SearchBar = ({onSubmit}) => {
-    const [query, setQuery] = useState('');
-
-    const handleChange = (e) => {
-        setQuery(e.target.value.toLowerCase());
+export const Searchbar = ({ onSubmit }) => {
+  const handleSubmit = (values, { resetForm }) => {
+    if (values.searchQuery.trim() === '') {
+      return toast.error('Please, enter search query.');
     }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (query.trim() === '') {
-            return toast.error('Please enter a search query');
-        }
-        onSubmit(query);
-        setQuery('');
-    }
-
-    return (
-        <SearchBarStyled>
-            <SearchForm onSubmit={handleSubmit}>
-                <ButtonSearch type="submit"></ButtonSearch>
-                <SearchInput
-                    type="text"
-                    name="query"
-                    value={query}
-                    onChange={handleChange}
-                    autoComplete="off"
-                    autoFocus
-                    placeholder="Search images and photos"
-                />
-            </SearchForm>
-        </SearchBarStyled>
-    )
-}
-
-SearchBar.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    onSubmit(values);
+    resetForm();
   };
-
-
-
-
+  return (
+    <SearchBarheader className="searchbar">
+      <Formik initialValues={{ searchQuery: '' }} onSubmit={handleSubmit}>
+        <SearchBarForm>
+          <SearchBarInput type="text" name="searchQuery" />
+          <SearchBarButton type="submit">
+            <SearchBarButtonLabel />
+            <ImSearch />
+          </SearchBarButton>
+        </SearchBarForm>
+      </Formik>
+    </SearchBarheader>
+  );
+};
