@@ -5,11 +5,11 @@ import { Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearhBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
-import Button from './components/Button/Button';
+import Button from './components/ui/Button/Button';
 import { Container } from './components/Container';
 import fetchApi from './service/ApiService';
-import Spiner from './components/Loader/Loader';
-import Modal from './components/Modal/Modal';
+import Spiner from './components/ui/Loader/Loader';
+import Modal from './components/ui/Modal/Modal';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
 
