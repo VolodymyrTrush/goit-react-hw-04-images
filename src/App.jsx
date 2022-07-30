@@ -5,13 +5,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import SearhBar from './components/SearchBar1/SearchBar';
-import ImageGallery from './components/ImageGallery1/ImageGallery';
-import Button from './components/Button1/Button';
+import SearhBar from './components/SearchBar/SearchBar';
+import ImageGallery from './components/ImageGallery/ImageGallery';
+import Button from './components/Button/Button';
 import { Container } from './components/Container';
 import fetchApi from './service/ApiService';
-import Spiner from './components/Loader1/Loader';
-import Modal from './components/Modal1/Modal';
+import Spiner from './components/Loader/Loader';
+import Modal from './components/Modal/Modal';
 // propTypes = { searchQuery: PropTypes.string };
 axios.defaults.baseURL = 'https://pixabay.com/api/';
 export default function App() {
