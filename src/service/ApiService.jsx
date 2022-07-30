@@ -24,6 +24,6 @@ export const getImages = async (query, page) => {
       });
     return data;
     } catch (error) {
-      toast.info(`🦄 Something went wrong ${error}`);
+      toast.info(`Something went wrong ${error}`);
     };
 };
