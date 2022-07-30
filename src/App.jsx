@@ -5,13 +5,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import SearhBar from './searchBar/SearchBar';
-import ImageGallery from './image-gallery/ImageGallery';
-import LoadMoreButton from './button/Button';
-import { AppContainer } from './App.styled';
-import fetchApi from '../components/service/ApiService';
-import Spiner from './loader/Loader';
-import Modal from './modal/Modal';
+import SearhBar from './components/SearchBar/SearchBar';
+import ImageGallery from './components/ImageGallery/ImageGallery';
+import LoadMoreButton from './components/Button/Button';
+import { Container } from './components/Container';
+import fetchApi from './service/ApiService';
+import Spiner from './components/Loader/Loader';
+import Modal from './components/Modal/Modal';
 // propTypes = { searchQuery: PropTypes.string };
 axios.defaults.baseURL = 'https://pixabay.com/api/';
 export default function App() {
@@ -91,7 +91,7 @@ export default function App() {
   };
 
   return (
-    <AppContainer>
+    <Container>
       <SearhBar onSubmit={handleFormSubmit} />
       <ToastContainer autoClose={3000} theme="colored" pauseOnHover />
       {status === 'pending' && <Spiner />}
@@ -109,6 +109,6 @@ export default function App() {
       {selectedImage && (
         <Modal selectedImage={selectedImage} tags={alt} onClose={closeModal} />
       )}
-    </AppContainer>
+    </Container>
   );
 }
