@@ -7,8 +7,8 @@ import SearhBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Button from './components/ui/Button/Button';
 import { Container } from './components/Container';
-import fetchApi from './service/ApiService';
-import Spiner from './components/ui/Loader/Loader';
+import { getImages } from './service/ApiService';
+import Loader from './components/ui/Loader/Loader';
 import Modal from './components/ui/Modal/Modal';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -31,7 +31,7 @@ export default function App() {
     async function fetchImages() {
       setStatus('pending');
       try {
-        const imageData = await fetchApi(searchQuery, page);
+        const imageData = await getImages(searchQuery, page);
         setTotalHits(imageData.total);
         const imagesHits = imageData.hits;
         if (!imagesHits.length) {
@@ -44,7 +44,7 @@ export default function App() {
         setStatus('resolved');
 
         if (page > 1) {
-          const CARD_HEIGHT = 300; // preview image height
+          const CARD_HEIGHT = 300;
           window.scrollBy({
             top: CARD_HEIGHT * 2,
             behavior: 'smooth',
@@ -79,7 +79,7 @@ export default function App() {
     setSelectedImage(null);
     setAlt(null);
     setStatus('idle');
-    setTotalHits(null); // try
+    setTotalHits(null); 
   };
 
   const loadMore = () => {
@@ -93,7 +93,7 @@ export default function App() {
   return (
     <Container>
       <SearhBar onSubmit={handleFormSubmit} />
-      {status === 'pending' && <Spiner />}
+      {status === 'pending' && <Loader />}
       {error && (
         <h1 style={{ color: 'orangered', textAlign: 'center' }}>
           {error.message}

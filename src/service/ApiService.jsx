@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import { BASE_URL, API_KEY } from 'constants/constants';
+import { BASE_URL, API_KEY } from '../constants/constants';
 
 const instance = axios.create({
   baseURL: BASE_URL,
@@ -9,8 +9,8 @@ const instance = axios.create({
   },
 });
 
-export const fetchApi = async (query, page) => {
-  const response = await instance.get(``, {
+export const getImages = async (query, page) => {
+   const response = await instance.get(``, {
     params: {
       image_type: 'photo',
       orientation: 'horizontal',
@@ -22,5 +22,3 @@ export const fetchApi = async (query, page) => {
   });
   return response.data.hits;
 };
-
-export default fetchApi;
