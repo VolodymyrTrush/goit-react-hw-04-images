@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { BASE_URL, API_KEY } from '../constants/constants';
 
 const instance = axios.create({
@@ -10,15 +11,19 @@ const instance = axios.create({
 });
 
 export const getImages = async (query, page) => {
-   const response = await instance.get(``, {
-    params: {
+    try {
+      const { data } = await instance.get('', {
+        params: {
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: true,
       per_page: 12,
       q: query,
       page: page,
-    },
-  });
-  return response.data.hits;
+        },
+      });
+    return data;
+    } catch (error) {
+      toast.info(`🦄 Something went wrong ${error}`);
+    };
 };

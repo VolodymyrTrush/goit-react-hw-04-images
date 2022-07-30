@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import SearhBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Button from './components/ui/Button/Button';
