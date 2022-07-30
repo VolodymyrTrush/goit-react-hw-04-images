@@ -32,6 +32,7 @@ export default function Modal({ selectedImage, tags, onClose }) {
     modalRoot
   );
 }
+
 Modal.propTypes = {
   selectedImg: PropTypes.string,
   tags: PropTypes.string,

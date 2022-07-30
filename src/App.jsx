@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-// import PropTypes from 'prop-types';
 import { ToastContainer, toast } from 'react-toastify';
 import { Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import SearhBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Button from './components/Button/Button';
@@ -12,8 +10,9 @@ import { Container } from './components/Container';
 import fetchApi from './service/ApiService';
 import Spiner from './components/Loader/Loader';
 import Modal from './components/Modal/Modal';
-// propTypes = { searchQuery: PropTypes.string };
+
 axios.defaults.baseURL = 'https://pixabay.com/api/';
+
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [images, setImages] = useState([]);
@@ -67,6 +66,7 @@ export default function App() {
     resetState();
     setSearchQuery(query);
   };
+
   const handleSelectedImage = (largeImageUrl, tags) => {
     setSelectedImage(largeImageUrl);
     setAlt(tags);
@@ -93,7 +93,6 @@ export default function App() {
   return (
     <Container>
       <SearhBar onSubmit={handleFormSubmit} />
-      <ToastContainer autoClose={3000} theme="colored" pauseOnHover />
       {status === 'pending' && <Spiner />}
       {error && (
         <h1 style={{ color: 'orangered', textAlign: 'center' }}>
@@ -109,6 +108,7 @@ export default function App() {
       {selectedImage && (
         <Modal selectedImage={selectedImage} tags={alt} onClose={closeModal} />
       )}
+      <ToastContainer autoClose={3000} theme="colored" pauseOnHover />
     </Container>
   );
 }

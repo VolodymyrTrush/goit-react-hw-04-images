@@ -48,6 +48,7 @@ export default class SearhBar extends Component {
     );
   }
 }
+
 SearchBar.propTypes = {
   onSubmit: PropTypes.func,
 };

@@ -1,5 +1,6 @@
 import { ThreeDots } from 'react-loader-spinner';
 import { LoaderContainer } from './Loader.styled';
+
 export default function Spiner() {
   return (
     <LoaderContainer>
