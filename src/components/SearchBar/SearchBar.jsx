@@ -1,33 +1,53 @@
-import { Formik } from 'formik';
+import { Component } from 'react';
 import { toast } from 'react-toastify';
-import { ImSearch } from 'react-icons/im';
-import {
-  SearchBarInput,
-  SearchBarForm,
-  SearchBarButton,
-  SearchBarheader,
-  SearchBarButtonLabel,
-} from './SearchBar.styled';
+import 'react-toastify/dist/ReactToastify.css';
 
-export const Searchbar = ({ onSubmit }) => {
-  const handleSubmit = (values, { resetForm }) => {
-    if (values.searchQuery.trim() === '') {
-      return toast.error('Please, enter search query.');
-    }
-    onSubmit(values);
-    resetForm();
+import PropTypes from 'prop-types';
+import {
+  SearchBar,
+  SerchForm,
+  Input,
+  SearchBtn,
+  SerchFormBtnLabel,
+} from './SerchBar.styled';
+export default class SearhBar extends Component {
+  state = {
+    searchQuery: '',
   };
-  return (
-    <SearchBarheader className="searchbar">
-      <Formik initialValues={{ searchQuery: '' }} onSubmit={handleSubmit}>
-        <SearchBarForm>
-          <SearchBarInput type="text" name="searchQuery" />
-          <SearchBarButton type="submit">
-            <SearchBarButtonLabel />
-            <ImSearch />
-          </SearchBarButton>
-        </SearchBarForm>
-      </Formik>
-    </SearchBarheader>
-  );
+
+  handleChange = evt => {
+    this.setState({ searchQuery: evt.currentTarget.value.toLowerCase() });
+  };
+  handleSubmit = evt => {
+    evt.preventDefault();
+    if (this.state.searchQuery.trim() === '') {
+      toast.error('Please enter something');
+      return;
+    }
+    this.props.onSubmit(this.state.searchQuery);
+    this.setState({ searchQuery: '' });
+  };
+  render() {
+    return (
+      <SearchBar>
+        <SerchForm onSubmit={this.handleSubmit}>
+          <Input
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+            name="serchQuery"
+            value={this.state.searchQuery}
+            onChange={this.handleChange}
+          />
+          <SearchBtn type="submit">
+            <SerchFormBtnLabel>Search</SerchFormBtnLabel>
+          </SearchBtn>
+        </SerchForm>
+      </SearchBar>
+    );
+  }
+}
+SearchBar.propTypes = {
+  onSubmit: PropTypes.func,
 };
