@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import SearhBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
-import LoadMoreButton from './components/Button/Button';
+import Button from './components/Button1/Button';
 import { Container } from './components/Container';
 import fetchApi from './service/ApiService';
 import Spiner from './components/Loader/Loader';
@@ -104,7 +104,7 @@ export default function App() {
         <ImageGallery images={images} selectedImage={handleSelectedImage} />
       )}
       {images.length > 0 && images.length !== totalHits && (
-        <LoadMoreButton onClick={loadMore} />
+        <Button onClick={loadMore} />
       )}
       {selectedImage && (
         <Modal selectedImage={selectedImage} tags={alt} onClose={closeModal} />
